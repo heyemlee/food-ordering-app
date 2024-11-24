@@ -5,6 +5,7 @@ const cors = require('cors');
 const db = require('./db');
 
 const app = express();
+const productRouter = require('./routes/productRouter');
 
 //corsOptions 告诉 Express 服务器，允许来自localhost:3000(fornt-end)的请求。
 var corsOptions = {
@@ -25,3 +26,4 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+app.use('/api', productRouter);
