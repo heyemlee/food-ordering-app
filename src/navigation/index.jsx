@@ -6,12 +6,16 @@ import Register from "../pages/Register";
 import Menu from "../pages/Menu";
 import Cart from "../pages/Cart";
 import PaymentSuccess from "../pages/PaymentSuccess";
+import { useSelector } from "react-redux";
+import { cartProducts } from "../stores/cart/cartSlice";
+import { Footer } from "../components/Footer";
 
 const Navigation = () => {
+    const productsInCart = useSelector(cartProducts);
 
     return (
         <BrowserRouter>
-            <Header/>
+            <Header cartCount={productsInCart ? productsInCart.length : 0}/>
             <Routes>
                 { /* 导航到"/"路径时,应该渲染什么component */ }
                 <Route path="/" element={<Home />} />
@@ -21,6 +25,7 @@ const Navigation = () => {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
             </Routes>
+            <Footer />
         </BrowserRouter>
     )
 }

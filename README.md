@@ -23,6 +23,11 @@ Go back to the project directory, you can run:
 
 ### `npm start`
 
+From the project root directory:
+This command will start both the frontend and backend simultaneously.
+
+### `npm run dev`
+
 ## Environment variables
 
 To store your environment variables, you can create `.env` file in the root of your project and fill in the following values:

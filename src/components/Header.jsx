@@ -1,8 +1,38 @@
 import foody from "../assets/images/foody.png";
 import cartIcon from "../assets/icons/cart.svg";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from "./elements/Button";
+import { useEffect, useState } from "react";
 
 export const Header = ({ cartCount }) => {
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('Auth token');
+        sessionStorage.removeItem('User Id');
+        window.dispatchEvent(new Event("storage"))
+        navigate("/");
+    }
+
+    useEffect(() => {
+        const checkAuthToken = () => {
+            const token = sessionStorage.getItem('Auth token');
+            if (token) {
+                setIsLoggedIn(true);
+            } else {
+                setIsLoggedIn(false);
+            }
+        }
+
+        window.addEventListener('storage', checkAuthToken);
+
+        return () => {
+            window.removeEventListener('storage', checkAuthToken);
+        }
+    }, [])
+
     return (
         <nav id="header" className="bg-black text-white">
             <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
@@ -12,7 +42,6 @@ export const Header = ({ cartCount }) => {
                     </Link>
                 </div>
                 <div className="nav-menu-wrapper flex items-center justify-between space-x-10">
-                    { /* 点击这个链接会改变浏览器的URL地址 */ }
                     <Link to="/" className="text-xl">Home</Link>
                     <Link to="#about" className="text-xl">About</Link>
                 </div>
@@ -21,8 +50,16 @@ export const Header = ({ cartCount }) => {
                         <img src={cartIcon} alt="cart"/>
                         {cartCount > 0 ? <div className="rounded-full bg-yellow-400 text-white inline-flex justify-center items-center w-full absolute -top-1 -right-1">{cartCount}</div> : null}
                     </Link>
-                    <Link to="/login" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded">Login</Link>
-                    <Link to="/register" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded">Register</Link>
+                    {
+                        isLoggedIn ? 
+                        <Button onClick={handleLogout}>Log Out</Button> : 
+                        (
+                            <>
+                             <Link to="/login">Log In</Link>
+                             <Link to="/register">Sign Up</Link>
+                            </>
+                        )
+                    }
                 </div>
             </div>
         </nav>
