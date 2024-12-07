@@ -1,3 +1,4 @@
+![Image](public/1.jpg)
 ## Available Scripts
 
 In the root of the project run:
